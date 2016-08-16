@@ -53,7 +53,6 @@ class DNASequence:
 
         :param: sequences - A collection of DNASequence objects to find overlaps with
         """
-
         for other_sequence in sequences:
 
             # If both neighbors have been found, this function has done its job
@@ -80,7 +79,7 @@ class DNASequence:
 
     def this_front_overlaps_other(self, other_sequence):
         """
-        A function that returns True if this DNASequence (self) overlaps other_sequence such that at
+        A function that determines if this DNASequence (self) overlaps other_sequence such that at
         least the trailing half of this DNASequence (self) can be seen in the leading part of
         other_sequence. This notion is called "front-overlapping", and can be used as so:
         "this DNASequence front-overlaps other_sequence".
@@ -89,17 +88,17 @@ class DNASequence:
         :param: other_sequence - The DNASequence to check for front-overlapping with
         :return: A tuple with types (bool, int). The bool value is True if this DNASequence
                  front-overlaps other_sequence; False otherwise. The int value is the total overlap
-                 detected
+                 detected, and is None if the bool value is False
 
         Also see: DNASequence.this_back_overlaps_other
         """
         # finding the total overall overlap
-        total_overlap = 0
-        for i in range(0, len(self)):
-            substr = self._seq_str[i:]    # look for a substring of the previous string
+        total_overlap = None
+        for i in range(0, len(self) // 2):
+            substr = self._seq_str[i:]                 # look for a substring of the previous string
             try:
                 # if the substring is found at the beginning of the other sequence, it is our winner
-                if other_sequence._seq_str.index(substr) == 0:
+                if other_sequence._seq_str.find(substr, 0, len(substr)) == 0:
                     total_overlap = len(substr)
                     break
             except ValueError:            # if the substring is not found, try a smaller one
@@ -110,7 +109,7 @@ class DNASequence:
 
     def this_back_overlaps_other(self, other_sequence):
         """
-        A function that returns True if this DNASequence (self) overlaps other_sequence such that at
+        A function that determines if this DNASequence (self) overlaps other_sequence such that at
         least the leading half of this DNASequence (self) can be seen in the trailing part of
         other_sequence. This notion is called "back-overlapping", and can be used as so:
         "this DNASequence back-overlaps other_sequence".
@@ -122,7 +121,7 @@ class DNASequence:
         :param: other_sequence - The DNASequence to check for back-overlapping with
         :return: A tuple with types (bool, int). The bool value is True if this DNASequence
                  back-overlaps other_sequence; False otherwise. The int value is the total overlap
-                 detected
+                 detected, and is None if the bool value is False
 
         Also see: DNASequence.this_front_overlaps_other
         """

@@ -39,7 +39,7 @@ class HasOverlapTests(unittest.TestCase):
 
         seq_a = DNASequence('AAAATTTA')
         seq_b = DNASequence('TAGGTTTT')
-        expected_num_overlap = 2
+        expected_num_overlap = None
 
         # Check front overlapping
         does_front_overlap, num_front_overlap = seq_a.this_front_overlaps_other(seq_b)
@@ -63,7 +63,7 @@ class HasOverlapTests(unittest.TestCase):
 
         seq_a = DNASequence('AAAATTTT')
         seq_b = DNASequence('GGGGTTTT')
-        expected_num_overlap = 0
+        expected_num_overlap = None
 
         # Check front overlapping
         does_front_overlap, num_front_overlap = seq_a.this_front_overlaps_other(seq_b)
