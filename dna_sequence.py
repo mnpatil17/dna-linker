@@ -32,6 +32,35 @@ class DNASequence:
         """
         return [DNASequence(seq_str) for seq_str in sequence_strs]
 
+    def set_prev_seq(self, prev_seq, overlap_size):
+        """
+        Establishes a doubly-linked relationship between this DNASequence and the given DNASequence
+
+        :param: prev_seq - The DNASequence that front-overlaps this DNASequence
+        :param: overlap_size - The size of front-overlapping
+        """
+        if prev_seq is None:
+            self.prev_seq = None
+            self.prev_overlap = 0
+        else:
+            prev_seq.set_next_seq(self, overlap_size)
+
+    def set_next_seq(self, next_seq, overlap_size):
+        """
+        Establishes a doubly-linked relationship between this DNASequence and the given DNASequence
+
+        :param: next_seq - The DNASequence that back-overlaps this DNASequence
+        :param: overlap_size - The size of back-overlapping
+        """
+        if next_seq is None:
+            self.next_seq = None
+            self.next_overlap = 0
+        else:
+            self.next_seq = next_seq
+            next_seq.prev_seq = self
+            self.next_overlap = overlap_size
+            next_seq.prev_overlap = overlap_size
+
     def merge_with_next(self):
         """
         Merges this DNASequence object with whatever its next_seq neighbor, and carries over the
@@ -64,18 +93,12 @@ class DNASequence:
             if self.next_seq is None:
                 does_front_overlap, overlap_len = self.this_front_overlaps_other(other_sequence)
                 if does_front_overlap:
-                    self.next_seq = other_sequence
-                    other_sequence.prev_seq = self
-                    self.next_overlap = overlap_len
-                    other_sequence.prev_overlap = overlap_len
+                    self.set_next_seq(other_sequence, overlap_len)
 
             if self.prev_seq is None:
                 does_back_overlap, overlap_len = self.this_back_overlaps_other(other_sequence)
                 if does_back_overlap:
-                    other_sequence.next_seq = self
-                    self.prev_seq = other_sequence
-                    other_sequence.next_overlap = overlap_len
-                    self.prev_overlap = overlap_len
+                    self.set_prev_seq(other_sequence, overlap_len)
 
     def this_front_overlaps_other(self, other_sequence):
         """
