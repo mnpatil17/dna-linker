@@ -2,6 +2,7 @@ from pyfasta import Fasta
 from dna_sequence import DNASequence
 import sys
 
+
 def concatenate_dna_sequences(all_sequences):
     """
     Combines all the DNA sequences given into one large DNA sequence, based on the overlapping
@@ -50,6 +51,12 @@ def merge_all_sequences(starting_sequence):
 
 
 def read_in_fasta_data(file):
+    """
+    Reads in FASTA data from a given file
+
+    :param: file - A string that is the path to the file to read the fasta data from
+    :return: An array of DNASequence objects from the file
+    """
     f = Fasta(file)
 
     all_sequences = set()
