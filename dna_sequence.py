@@ -1,5 +1,4 @@
 
-
 class DNASequence:
     """
     An abstraction of a DNA sequence.
