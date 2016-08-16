@@ -22,6 +22,16 @@ class DNASequence:
     def __str__(self):
         return self._seq_str
 
+    @staticmethod
+    def get_array_of_dna_sequences(sequence_strs):
+        """
+        Converts a collection of DNA sequence strings into a list of DNASequence objects.
+
+        :param: sequence_strs - A collection of DNA sequences represented a strings
+        :return: A list of DNASequence objects representing the given strings
+        """
+        return [DNASequence(seq_str) for seq_str in sequence_strs]
+
     def merge_with_next(self):
         """
         Merges this DNASequence object with whatever its next_seq neighbor, and carries over the

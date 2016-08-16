@@ -1,6 +1,6 @@
 import unittest
 from dna_sequence import DNASequence
-from main import find_all_overlaps
+from main import establish_all_overlaps
 from random import shuffle
 
 
@@ -53,7 +53,7 @@ class MakeOverlapTests(unittest.TestCase):
         Tests that finding all overlaps results in the correct ordering
         """
 
-        find_all_overlaps(self.sequences)
+        establish_all_overlaps(self.sequences)
 
         # Check first sequence pointers
         assert self.first_seq.prev_seq is None, 'first_seq\'s prev sequence should be None'

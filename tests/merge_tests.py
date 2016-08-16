@@ -4,7 +4,7 @@ from dna_sequence import DNASequence
 
 class MergeTests(unittest.TestCase):
     """
-    Tests the ability to merge two tests
+    Tests the ability to merge two DNA sequences
     """
 
     def _establish_next_relationship(self, first_seq, second_seq, overlap_size):
@@ -14,6 +14,9 @@ class MergeTests(unittest.TestCase):
         second_seq.prev_overlap = overlap_size
 
     def test_simple_merger(self):
+        """
+        Checks the simple merging functionality of two adjacent DNA sequences
+        """
         seq_a = DNASequence('AAAATTTT')
         seq_b = DNASequence('TTTTGGGG')
         self._establish_next_relationship(seq_a, seq_b, 4)
