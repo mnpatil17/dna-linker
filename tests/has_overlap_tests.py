@@ -37,8 +37,8 @@ class HasOverlapTests(unittest.TestCase):
         a small overlap, but not enough. Additionally, checks the converse for back overlapping
         """
 
-        seq_a = DNASequence('AAAATTTT')
-        seq_b = DNASequence('TTGGTTTT')
+        seq_a = DNASequence('AAAATTTA')
+        seq_b = DNASequence('TAGGTTTT')
         expected_num_overlap = 2
 
         # Check front overlapping
