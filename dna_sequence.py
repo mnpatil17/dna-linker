@@ -23,6 +23,15 @@ class DNASequence:
         return self._seq_str
 
     def merge_with_next(self):
+        """
+        Merges this DNASequence object with whatever its next_seq neighbor, and carries over the
+        relevant pointers. If self.next_seq is None, returns self.
+
+        :return: The merged DNASequence
+        """
+        if self.next_seq is None:
+            return self
+
         new_seq_str = self._seq_str + self.next_seq._seq_str[self.next_overlap:]
         return DNASequence(new_seq_str, prev_seq=self.prev_seq, next_seq=self.next_seq.next_seq,
                            prev_overlap=self.prev_overlap, next_overlap=self.next_seq.next_overlap)
@@ -34,6 +43,7 @@ class DNASequence:
 
         :param: sequences - A collection of DNASequence objects to find overlaps with
         """
+
         for other_sequence in sequences:
 
             # If both neighbors have been found, this function has done its job
@@ -42,7 +52,7 @@ class DNASequence:
             elif other_sequence == self:
                 continue
 
-            if self.next_seq is not None:
+            if self.next_seq is None:
                 does_front_overlap, overlap_len = self.this_front_overlaps_other(other_sequence)
                 if does_front_overlap:
                     self.next_seq = other_sequence
@@ -50,8 +60,8 @@ class DNASequence:
                     self.next_overlap = overlap_len
                     other_sequence.prev_overlap = overlap_len
 
-            if self.prev_seq is not None:
-                does_back_overlap, _ = self.this_back_overlaps_other(other_sequence)
+            if self.prev_seq is None:
+                does_back_overlap, overlap_len = self.this_back_overlaps_other(other_sequence)
                 if does_back_overlap:
                     other_sequence.next_seq = self
                     self.prev_seq = other_sequence
@@ -73,16 +83,19 @@ class DNASequence:
 
         Also see: DNASequence.this_back_overlaps_other
         """
-        total_len = len(self) + len(other_sequence)
-
+        # finding the total overall overlap
         total_overlap = 0
-        for self_char, other_char in zip(self._seq_str[::-1], other_sequence._seq_str):
-            if self_char != other_char:
-                break
-            total_overlap += 1
+        for i in range(0, len(self)):
+            substr = self._seq_str[i:]    # look for a substring of the previous string
+            try:
+                # if the substring is found at the beginning of the other sequence, it is our winner
+                if other_sequence._seq_str.index(substr) == 0:
+                    total_overlap = len(substr)
+                    break
+            except ValueError:            # if the substring is not found, try a smaller one
+                pass
 
-        # TODO: might have to confirm this rule
-        front_overlaps = total_overlap * 2 >= (total_len - total_overlap) // 2
+        front_overlaps = total_overlap > len(self) // 2 and total_overlap > len(other_sequence) // 2
         return front_overlaps, total_overlap
 
     def this_back_overlaps_other(self, other_sequence):

@@ -2,7 +2,7 @@ import unittest
 from dna_sequence import DNASequence
 
 
-class OverlapTests(unittest.TestCase):
+class HasOverlapTests(unittest.TestCase):
     """
     Tests the overlapping detection
     """
@@ -13,9 +13,9 @@ class OverlapTests(unittest.TestCase):
         for back overlapping
         """
 
-        seq_a = DNASequence('AAAAAGGG')
-        seq_b = DNASequence('GGGTTTTT')
-        expected_num_overlap = 3
+        seq_a = DNASequence('AAATGACCA')
+        seq_b = DNASequence('TGACCATTT')
+        expected_num_overlap = 6
 
         # Check front overlapping
         does_front_overlap, num_front_overlap = seq_a.this_front_overlaps_other(seq_b)

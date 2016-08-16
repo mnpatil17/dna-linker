@@ -14,7 +14,6 @@ class MergeTests(unittest.TestCase):
         second_seq.prev_overlap = overlap_size
 
     def test_simple_merger(self):
-
         seq_a = DNASequence('AAAATTTT')
         seq_b = DNASequence('TTTTGGGG')
         self._establish_next_relationship(seq_a, seq_b, 4)

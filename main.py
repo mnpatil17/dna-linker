@@ -1,4 +1,5 @@
-def find_all_overlaps(self, all_sequences):
+
+def find_all_overlaps(all_sequences):
 
     starting_sequence = None
     for sequence in all_sequences:
