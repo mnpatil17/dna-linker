@@ -14,27 +14,14 @@ class DNASequence:
         self.next_seq = next_seq
         self.next_overlap = next_overlap
 
-    # @property
-    # def _get_midpoint(self):
-    #     """
-    #     The midpoint index of this DNA sequence
-    #     """
-    #     return len(self) // 2
-
-    # def get_first_half(self):
-    #     return self._seq_str[:self._get_midpoint]
-
-    # def get_last_half(self):
-    #     return self._seq_str[self._get_midpoint:]
-
     def __len__(self):
         return len(self._seq_str)
 
-    # def reverse(self):
-    #     """
-    #     :return: A DNASequence that is the reverse of self
-    #     """
-    #     return DNASequence(self._seq_str[::-1])
+    def __eq__(self, other):
+        return self._seq_str == other._seq_str
+
+    def __str__(self):
+        return self._seq_str
 
     def merge_with_next(self):
         new_seq_str = self._seq_str + self.next_seq._seq_str[self.next_overlap:]
@@ -43,7 +30,10 @@ class DNASequence:
 
     def find_overlaps(self, sequences):
         """
-        Finds overlaps with this sequence in a particular set of sequences.
+        Finds overlaps with this sequence in a particular set of sequences, and establishes
+        the prev_seq and next_seq for this DNASequence and the ones in `sequences`
+
+        :param: sequences - A collection of DNASequence objects to find overlaps with
         """
         for other_sequence in sequences:
 
@@ -93,7 +83,7 @@ class DNASequence:
             total_overlap += 1
 
         # TODO: might have to confirm this rule
-        front_overlaps = total_overlap * 2 >= total_len // 2
+        front_overlaps = total_overlap * 2 >= (total_len - total_overlap) // 2
         return front_overlaps, total_overlap
 
     def this_back_overlaps_other(self, other_sequence):
@@ -115,6 +105,3 @@ class DNASequence:
         Also see: DNASequence.this_front_overlaps_other
         """
         return other_sequence.this_front_overlaps_other(self)
-
-    def __eq__(self, other):
-        return self._seq_str == other._seq_str
